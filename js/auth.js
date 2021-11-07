@@ -1,57 +1,58 @@
-const buttonAuth = document.querySelector('.button-auth')
-const modalAuth = document.querySelector('.modal-auth')
-const closeAuth = document.querySelector('.close-auth')
-const logInForm = document.getElementById('logInForm')
-const inputLogin = document.getElementById('login')
-const inputPassword = document.getElementById('password')
-const buttonOut = document.querySelector('.button-out');
-const userName = document.querySelector('.user-name')
+const buttonAuth = document.querySelector(".button-auth");
+const modalAuth = document.querySelector(".modal-auth");
+const closeAuth = document.querySelector(".close-auth");
+const logInForm = document.getElementById("logInForm");
+const inputLogin = document.getElementById("login");
+const inputPassword = document.getElementById("password");
+const buttonOut = document.querySelector(".button-out");
+const userName = document.querySelector(".user-name");
+let isLogin = false;
 
 const login = (user) => {
-    buttonAuth.style.display = 'none'
+  buttonAuth.style.display = "none";
 
-    buttonOut.style.display = 'block'
-    userName.style.display = 'block'
+  buttonOut.style.display = "block";
+  userName.style.display = "block";
 
-    userName.textContent = user.login
-    modalAuth.style.display = 'none'
-}
+  userName.textContent = user.login;
+  modalAuth.style.display = "none";
+  isLogin = true;
+};
 
 const logout = () => {
-    buttonOut.style.display = 'none'
-    userName.textContent = ''
-    buttonAuth.style.display = 'flex'
-    localStorage.removeItem('user')
-}
+  buttonOut.style.display = "none";
+  userName.textContent = "";
+  buttonAuth.style.display = "flex";
+  localStorage.removeItem("user");
+  isLogin = false;
+};
 
-buttonAuth.addEventListener('click', () => {
-    modalAuth.style.display = 'flex'
-})
+buttonAuth.addEventListener("click", () => {
+  modalAuth.style.display = "flex";
+});
 
-closeAuth.addEventListener('click', () => {
-    modalAuth.style.display = 'none'
-})
+closeAuth.addEventListener("click", () => {
+  modalAuth.style.display = "none";
+});
 
-buttonOut.addEventListener('click', () => {
+buttonOut.addEventListener("click", () => {
+  logout();
+});
 
-    logout()
-})
+logInForm.addEventListener("submit", (event) => {
+  event.preventDefault();
 
-logInForm.addEventListener('submit', (event) => {
-    event.preventDefault()
+  const user = {
+    login: inputLogin.value,
+    password: inputPassword.value,
+  };
+  localStorage.setItem("user", JSON.stringify(user));
 
-    const user = {
-        login: inputLogin.value,
-        password: inputPassword.value
-    }
-    localStorage.setItem('user', JSON.stringify(user))
+  if (user.login === "") {
+    alert("Введите логин!");
+  } else login(user);
+});
 
-    if (user.login === '') {
-        alert('Введите логин!')
-    } else login(user);
-})
-
-
-if (localStorage.getItem('user')) {
-    login(JSON.parse(localStorage.getItem('user')))
+if (localStorage.getItem("user")) {
+  login(JSON.parse(localStorage.getItem("user")));
 }
